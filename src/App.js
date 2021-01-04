@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ButtonAppBar from './components/appBar'
 import RadioButtonsGroup from './components/radio'
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, TextField, Button, Checkbox} from '@material-ui/core';
-import {Doughnut} from 'react-chartjs-2';
+
 
 const data = {
 	labels: [
@@ -34,12 +34,19 @@ const useStyles = makeStyles((theme) => ({
     padding: 15
   },
   input: {
-    width: '95%',
+    width: '40%',
+    marginLeft: 10,
     marginBottom: 10
   },
   intro: {
-    textAlign: 'center',
+    // textAlign: 'center',
     color: 'blue',
+  },
+  address: {
+    width: '90%', 
+  },
+  next: {
+    marginLeft: 310,
   },
   para: {
     mariginleft: 10,
@@ -51,9 +58,21 @@ const useStyles = makeStyles((theme) => ({
 
 
 function App() {
-
+//i havent used formik- which is for form validaton
   const classes = useStyles();
   const [checked, setChecked] = React.useState(true);
+
+  useEffect(()=> {
+    async function fetchData(){
+     
+      const response = await fetch('https://www.bitspro.com/api/form'); ///this api is returning no data, 
+      console.log("response = ",response);
+      let data2 = await response.json()
+  
+     console.log("Data = ",data2);
+    }
+    fetchData();
+  },[]);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -65,40 +84,33 @@ function App() {
        <ButtonAppBar />
        
       <Paper elevation={3} className={classes.paper}>
-        <h1 className={classes.intro}>Form by Zaryab</h1>
+        <h1 className={classes.intro}>Checkout</h1>
         <form className={classes.root} noValidate autoComplete="off">
-          <TextField label="Enter Name" className={classes.input}/>
-          <TextField label="Enter Password" className={classes.input}/>
-          <p className={classes.para}>Select Ur Gender</p>
-          <RadioButtonsGroup />
-          <p>Please Select Languages you know:</p>
-          Java
-          <Checkbox className={classes.btn}
-        
-        onChange={handleChange}
-        inputProps={{ 'aria-label': 'primary checkbox' }}
-      />Python
-      <Checkbox className={classes.btn}
-        
-        color="primary"
-        inputProps={{ 'aria-label': 'primary checkbox' }}
-      />React
+          <TextField label="First name" className={classes.input}/>
+          <TextField label="Last name" className={classes.input}/>
+          <TextField label="adrres line 1" className={classes.address}/>
+          <TextField label="adrres line 2" className={classes.address}/>
+          <TextField label="city" className={classes.input}/>
+          <TextField label="state/province" className={classes.input}/>
+          <TextField label="zip code" className={classes.input}/>
+          <TextField label="postal code" className={classes.input}/>
+          
+      <br />
       <Checkbox
         
         color="primary"
         inputProps={{ 'aria-label': 'primary checkbox' }}
-      />
+      >hii</Checkbox>
+          <br></br>
           
-          
-          <Button variant="contained" color="primary" className={classes.input}>
-            Submit
+          <Button variant="contained" color="primary" className={classes.next}>
+            Next
           </Button>
         </form>
         
       </Paper> 
 
-      <h2>Doughnut Example</h2>
-        <Doughnut data={data}  />
+     
     
     </div>
   );
